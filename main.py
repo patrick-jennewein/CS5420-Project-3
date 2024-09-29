@@ -10,10 +10,10 @@ def main():
         # parse the command line
         args = parse()
 
+        # read the image
         image = cv2.imread(args['image'])
-
         if image is None:
-            print(f"Invalid image file.")
+            raise Exception(f"Invalid image file You provided: {args['image']}")
 
         cv2.imshow("rendering", image)
         cv2.waitKey()
