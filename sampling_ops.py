@@ -80,6 +80,14 @@ def upsample_image_by_interpolation(image, upsample_rate):
 
 
 
+def intensity_downsample(image, downsample_rate):
+    downsampled_image = (image >> downsample_rate) << downsample_rate
+    cv2.imshow(f'Downsampled Image by {downsample_rate} bits', downsampled_image)
+
+    return downsampled_image
+
+
+
 def perform_operation_one(image, downsample_rate):
     """combine downsampling and upsampling to return an image that is the same size as original but down-sampled"""
     downsampled_image = downsample_image_by_removal(image, downsample_rate)
