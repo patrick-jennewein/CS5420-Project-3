@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-def downsample_image(image, downsample_rate):
+def downsample_image_by_removal(image, downsample_rate):
     """down-sample the image by removing columns and rows"""
     new_image = image[::downsample_rate, ::downsample_rate]
 
@@ -17,7 +17,7 @@ def downsample_image(image, downsample_rate):
     return new_image
 
 
-def upsample_image(image, downsample_rate):
+def upsample_image_by_copying(image, downsample_rate):
     """Up-sample the image by copying pixels, dynamically based on the down-sample rate."""
 
     # get the dimensions of the original image
@@ -46,6 +46,6 @@ def upsample_image(image, downsample_rate):
 
 def perform_operation_one(image, downsample_rate):
     """combine downsampling and upsampling to return an image that is the same size as original but down-sampled"""
-    downsampled_image = downsample_image(image, downsample_rate)
-    upsampled_image = upsample_image(downsampled_image, downsample_rate)
+    downsampled_image = downsample_image_by_removal(image, downsample_rate)
+    upsampled_image = upsample_image_by_copying(downsampled_image, downsample_rate)
     return upsampled_image
