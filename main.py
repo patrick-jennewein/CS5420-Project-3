@@ -4,7 +4,7 @@
 
 import cv2
 from parse_args import parse
-from sampling_ops import perform_operation_one
+from sampling_ops import perform_operation_one, perform_operation_two
 
 def main():
     try:
@@ -19,15 +19,15 @@ def main():
 
         downsampled_image_1 = None
         downsampled_image_2 = None
+        downsample_rate = 2
 
         # operation 1
         if args['s'] == 1:
-            downsample_rate = 2
-            downsampled_image = perform_operation_one(image, downsample_rate)
+            downsampled_image_1 = perform_operation_one(image, downsample_rate)
 
         # operation 2
         elif args['s'] == 2:
-            pass
+            downsampled_image_2 = perform_operation_two(image, downsample_rate)
 
         # wait for user input
         cv2.waitKey()

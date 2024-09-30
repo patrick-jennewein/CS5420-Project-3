@@ -7,7 +7,7 @@ def downsample_image_by_removal(image, downsample_rate):
     new_image = image[::downsample_rate, ::downsample_rate]
 
     # created a resized window
-    window_name = "#1a: Down-sampled Image"
+    window_name = "#1a: Down-sampled Image by Removal"
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
     cv2.resizeWindow(window_name, new_image.shape[1], new_image.shape[0])
 
@@ -41,11 +41,55 @@ def upsample_image_by_copying(image, downsample_rate):
             upsampled_image[row * downsample_rate:(row + 1) * downsample_rate,
                             col * downsample_rate:(col + 1) * downsample_rate] = image[row, col]
 
-    cv2.imshow("#1b: Up-sampled Image (original size)", upsampled_image)
+    cv2.imshow("#1b: Up-sampled Image by Copying (original size)", upsampled_image)
     return upsampled_image
+
+
+
+def downsample_image_by_averaging(image, downsample_rate):
+    """down-sample the image by averaging pixels."""
+    # calculate the new dimensions
+    height, width = image.shape[:2]
+    new_height, new_width = height // downsample_rate, width // downsample_rate
+
+    # create an empty image
+    downsampled_image = np.zeros((new_height, new_width, image.shape[2]), dtype=image.dtype)
+
+    # average the pixels in the neighborhood
+    for i in range(new_height):
+        for j in range(new_width):
+            downsampled_image[i, j] = image[i * downsample_rate:(i + 1) * downsample_rate,
+                                      j * downsample_rate:(j + 1) * downsample_rate].mean(axis=(0, 1))
+
+    # create a new window to display
+    window_name = "#2a: Down-sampled Image by Averaging"
+    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+    cv2.resizeWindow(window_name, downsampled_image.shape[1], downsampled_image.shape[0])
+    cv2.imshow(window_name, downsampled_image)
+
+    return downsampled_image
+
+
+def upsample_image_by_interpolation(image, upsample_rate):
+    """upsample the image by linear interpolation."""
+    upsampled_image = cv2.resize(image, (image.shape[1] * upsample_rate, image.shape[0] * upsample_rate),
+                                 interpolation=cv2.INTER_LINEAR)
+
+    cv2.imshow("#2b: Up-sampled Image by Interpolation (Original Size)", upsampled_image)
+    return upsampled_image
+
+
 
 def perform_operation_one(image, downsample_rate):
     """combine downsampling and upsampling to return an image that is the same size as original but down-sampled"""
     downsampled_image = downsample_image_by_removal(image, downsample_rate)
     upsampled_image = upsample_image_by_copying(downsampled_image, downsample_rate)
+    return upsampled_image
+
+
+
+def perform_operation_two(image, downsample_rate):
+    """combine downsampling and upsampling to return an image that is the same size as original but down-sampled."""
+    downsampled_image = downsample_image_by_averaging(image, downsample_rate)
+    upsampled_image = upsample_image_by_interpolation(downsampled_image, downsample_rate)
     return upsampled_image
