@@ -12,7 +12,7 @@ def downsample_image_by_removal(image, downsample_rate):
     cv2.resizeWindow(window_name, new_image.shape[1], new_image.shape[0])
 
     # display the down-sampled image
-    cv2.imshow(window_name, new_image)
+    #cv2.imshow(window_name, new_image)
 
     return new_image
 
@@ -41,7 +41,7 @@ def upsample_image_by_copying(image, downsample_rate):
             upsampled_image[row * downsample_rate:(row + 1) * downsample_rate,
                             col * downsample_rate:(col + 1) * downsample_rate] = image[row, col]
 
-    cv2.imshow("#1b: Up-sampled Image by Copying (original size)", upsampled_image)
+    #cv2.imshow("#1b: Up-sampled Image by Copying (original size)", upsampled_image)
     return upsampled_image
 
 

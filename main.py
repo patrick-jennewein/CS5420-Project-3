@@ -4,7 +4,7 @@
 
 import cv2
 from parse_args import parse
-from sampling_ops import perform_operation_one, perform_operation_two, intensity_downsample
+from sampling_ops import *
 
 def main():
     try:
@@ -17,19 +17,27 @@ def main():
             raise Exception(f"Invalid image file You provided: {args['image']}")
         cv2.imshow("Original Image", image)
 
-        downsampled_image_1 = None
-        downsampled_image_2 = None
-        downsample_rate = 2
+        downsampled_images = []
+        upsampled_images = []
+        # downsampled_image_2 = None
+        downsample_rate = 2 ** args['d']
 
         # operation 1
         if args['s'] == 1:
-            downsampled_image_1 = perform_operation_one(image, downsample_rate)
-            intensity_downsample(downsampled_image_1, args['i'])
+            for i in range(1, args['d'] + 1):
+                # downsample and then upsample
+                downsampled_image = downsample_image_by_removal(image, 2 ** i)
+                downsampled_images.append(downsampled_image)
+                upsampled_image = upsample_image_by_copying(downsampled_images[i - 1], 2 ** i)
+                upsampled_images.append(upsampled_image)
+
+                # show the images
+                cv2.imshow(f"Downsample {image.shape[0] / (2 ** i)} x {image.shape[1] / (2 ** i)}", downsampled_images[i - 1])
+                cv2.imshow(f"Upsample {image.shape[0] / (2 ** i)} x {image.shape[1] / (2 ** i)}", upsampled_images[i - 1])
 
         # operation 2
-        elif args['s'] == 2:
-            downsampled_image_2 = perform_operation_two(image, downsample_rate)
-            intensity_downsample(downsampled_image_2, args['i'])
+        # elif args['s'] == 2:
+        #     downsampled_image_2 = perform_operation_two(image, downsample_rate)
 
 
 
