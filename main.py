@@ -17,19 +17,17 @@ def main():
             raise Exception(f"Invalid image file You provided: {args['image']}")
         cv2.imshow("Original Image", image)
 
-        downsampled_image_1 = None
-        downsampled_image_2 = None
-        downsample_rate = 2
+        new_image = None
+        depth = args['d']
+        downsample_rate = 2 ** depth
 
         # operation 1
         if args['s'] == 1:
-            downsampled_image_1 = perform_operation_one(image, downsample_rate)
-            intensity_downsample(downsampled_image_1, args['i'])
+            new_image = perform_operation_one(image, downsample_rate, depth)
 
         # operation 2
         elif args['s'] == 2:
-            downsampled_image_2 = perform_operation_two(image, downsample_rate)
-            intensity_downsample(downsampled_image_2, args['i'])
+            new_image = perform_operation_two(image, downsample_rate, depth)
 
 
 
