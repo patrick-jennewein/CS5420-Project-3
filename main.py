@@ -24,10 +24,14 @@ def main():
         # operation 1
         if args['s'] == 1:
             new_image = perform_operation_one(image, downsample_rate, depth)
+            if args['i'] > 1:
+                new_image = intensity_downsample(image, args['i'])
 
         # operation 2
         elif args['s'] == 2:
             new_image = perform_operation_two(image, downsample_rate, depth)
+            if args['i'] > 1:
+                new_image = intensity_downsample(image, args['i'])
 
 
 

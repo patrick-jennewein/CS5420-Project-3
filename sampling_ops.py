@@ -103,14 +103,14 @@ def upsample_image_by_interpolation(image, upsample_rate, depth):
 
 
 
-def intensity_downsample(image, downsample_rate, depth):
+def intensity_downsample(image, depth):
     """use bit shifting to intensity down-sample the image."""
     # (image >> downsample_rate) dividing pixels by downsample_rate
     # << downsample_rate shifts the bits that are remaining
-    downsampled_image = (image >> downsample_rate) << downsample_rate
+    downsampled_image = (image >> depth) << depth
 
     # create a new window to display
-    window_name = f'Downsampled Image by {downsample_rate} bits'
+    window_name = f'Downsampled Image by {depth} bits'
     cv2.imshow(window_name, downsampled_image)
     return downsampled_image
 
